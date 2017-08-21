@@ -16,12 +16,14 @@ def applyFilter(mImage, filterSize):
     im = Image.fromarray(red)
     im = Image.fromarray(green)
     im = Image.fromarray(blue)
+    filter(red, filterSize)
     print("done")
 
-def filter(mColor, filtersize):
+def filter(mColor, filterSize):
     print("color")
     xlength = np.size(mColor[:,1])
     ylength = np.size(mColor[1,:])
+    rangesize = int(filterSize/2)
+    print(rangesize)
     for i in range(0, xlength):
         for j in range(0, ylength):
-            print("somthing")
