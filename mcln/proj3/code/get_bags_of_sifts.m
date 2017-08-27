@@ -61,7 +61,7 @@ and using KD-trees.
 load('vocab.mat')
 vocab_size = size(vocab, 2);numImage = size(image_paths)
 Numimg = numImage(1)
-features[];
+image_feats[];
 for i=1:Numimg
   img = imread(image_paths{i});
   [locations, SIFT_features] = vl_dsift(img);
@@ -69,9 +69,10 @@ for i=1:Numimg
   index = zeros(vocab_size);
   for j=1:Numimg
       [TMP,I] = min(D(i,:));
-      index[I(1)] = 
+      index[I(1)] = index[I(1)] + 1;
   end
-  
+  feature_hist = index ./ sum(index);
+  image_feats(i,:) = feature_hist;
 end
 
 
