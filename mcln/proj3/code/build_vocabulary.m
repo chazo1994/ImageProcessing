@@ -11,14 +11,22 @@ function vocab = build_vocabulary( image_paths, vocab_size )
 % centroid / visual word.
 sizebag = size(image_paths)
 Nimg = sizebag(1)
-features[];
+binsize = 8;
+step = 15;
+features = [];
 for i=1:Nimg
-  img = imread(image_paths{i});
-  [locations, SIFT_features] = vl_dsift(img) 
+  i
+  img = single( imread(image_paths{i}) );
+  if size(img, 3) > 1
+        img =rgb2gray(img);
+  end
+  [locations, SIFT_features] = vl_dsift(img,'step', step, 'size', binsize);
   features = [features,SIFT_features];
+  i
 end
 [centers, assignment] = vl_kmeans(double(features), vocab_size);
 vocab =centers';
+
 %{
 Useful functions:
 [locations, SIFT_features] = vl_dsift(img) 

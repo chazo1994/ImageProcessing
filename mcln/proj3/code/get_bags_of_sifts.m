@@ -59,20 +59,27 @@ and using KD-trees.
 %}
 
 load('vocab.mat')
-vocab_size = size(vocab, 2);numImage = size(image_paths)
+vocab_size = size(vocab, 2);
+numImage = size(image_paths);
 Numimg = numImage(1)
-image_feats[];
+image_feats = [];
+fastNeibor = vl_kdtreebuild(vocab');
 for i=1:Numimg
-  img = imread(image_paths{i});
-  [locations, SIFT_features] = vl_dsift(img);
+  img = single(imread(image_paths{i}));
+  img =rgb2gray(img);
+  [locations, SIFT_features] = vl_dsift(img,'step',3,'size',8);
+  [index , dist] = vl_kdtreequery(fastNeibor , vocab' , double(SIFT_features));
+  
+  histogram = hist(double(index), vocab_size);
+  featureHist = histogram ./ histogram;
   D = vl_alldist2(SIFT_features,vocab');
-  index = zeros(vocab_size);
-  for j=1:Numimg
-      [TMP,I] = min(D(i,:));
-      index[I(1)] = index[I(1)] + 1;
-  end
-  feature_hist = index ./ sum(index);
-  image_feats(i,:) = feature_hist;
+  %index = zeros(vocab_size);
+  %for j=1:Numimg
+  %    [TMP,I] = min(D(i,:));
+  %    index[I(1)] = index[I(1)] + 1;
+  %end
+  %feature_hist = index ./ sum(index);
+  image_feats(i,:) = featureHist;
 end
 
 

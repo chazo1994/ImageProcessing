@@ -47,21 +47,9 @@ Useful functions:
 %because unique() sorts them. This shouldn't really matter, though.
 categories = unique(train_labels); 
 num_categories = length(categories);
-sizetrain = size(train_labels, 1);
 scores = []
 for i=1:num_categories
-    index = double(strcmp(catergories(i),train_labels)
-    for j=1:sizetrain
-        if(index(j) == 0)
-            index(j) = -1
-        end
-    end
-    [W B] = vl_svmtrain(train_image_feats, index, 0.001);
-    scores = [scores; (w' * test_image_feats' + B)];
-end
-[max maxi] = max(scores);
-predicted_categories = categories(max_indices');
-    
+    index = double()
 
 
 
